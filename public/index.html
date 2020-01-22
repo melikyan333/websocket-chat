@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Websocket Chat</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div class="container mx-auto">
+      <div v-if="state == 0" class="max-w-6xl rounded overflow-hidden shadow-lg mx-auto p-5">
+        <h3 class="text-4xl text-center">Welcome! Please enter your name</h3>
+        <hr>
+        <form @submit.prevent="setName" class="p-3">
+          <div class="flex items-center border-b border-b-2 border-teal-500 py-5">
+            <input type="text"
+              class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+              placeholder="Username..." v-model:value="username">
+            <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded cursor-pointer" type="submit" value="Join" v-bind:disabled="username === ''" v-bind:class="username === '' ? 'opacity-50 cursor-not-allowed' : 'border: none' ">
+              Join
+            </button>
+            <button @click="guest" class="text-sm bg-transparent hover:bg-purple-800 text-purple-800 hover:text-white ml-3 py-2 px-2 border border-purple-800 hover:border-transparent rounded whitespace-no-wrap">
+              Join as a Guest
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="max-w-100 rounded overflow-hidden shadow-lg p-4" v-if="state == 1">
+        <ul id="chatbox" class="min-h-75 overflow-auto">
+          <li v-for="message in messages">
+            <b>{{ message.user }}:</b> {{ message.message }}
+          <li>
+        </ul>
+        <form @submit.prevent="sendMessage" class="flex items-center border-t border-t-2 border-teal-500 py-5">
+          <input type="text"
+            class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 h-10 leading-tight rounded-lg bg-gray-200 shadow focus:outline-none"
+            placeholeder="Type Here..." v-bind:class="{ 'error': hasError }" v-model:value="message">
+          <button
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 rounded rounded-full w-10"
+            type="submit" name="action" v-bind:disabled="message === ''"
+            v-bind:class="message === '' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer' ">
+            <i class="material-icons right align-middle">send</i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = null;
+    var app = new Vue({
+      el: '#app',
+      data: {
+        errors: [],
+        hasError: false,
+        message: '',
+        username: '',
+        messages: [],
+        state: false,
+      },
+      methods: {
+        sendMessage: function () {
+          if (!this.message || this.message == '' || this.message == ' ') {
+            this.errors.push('empty');
+            this.hasError = true;
+            return false;
+          }
+          socket.emit('message', this.message);
+          this.message = '';
+        },
+        setName: function () {
+          socket.emit('join', this.username);
+          this.username = '';
+          this.state = true;
+        },
+        guest: function () {
+          socket.emit('join', null);
+          this.state = true;
+        }
+      },
+      created: function () {
+        socket = io();
+      },
+      mounted: function () {
+        socket.on('message', function (message) {
+          app.messages.push(message);
+          app.$nextTick(function () {
+            var messageBox = document.getElementById('chatbox');
+            messageBox.scrollTop = messageBox.scrollHeight;
+          })
+        })
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -23,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/melikyan333/websocket-chat/issues"
   },
-  "homepage": "https://github.com/melikyan333/websocket-chat#readme"
+  "homepage": "https://github.com/melikyan333/websocket-chat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "vue": "^2.6.11",
+    "vuetify": "^2.2.5"
+  }
 }

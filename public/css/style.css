@@ -1,0 +1,12 @@
+.error{
+  border: 1px solid red !important;
+}
+
+#chatbox {
+  height: 78vh;
+}
+
+*{
+  transition: 0.2s;
+  transition-timing-function: ease-in-out;
+}
