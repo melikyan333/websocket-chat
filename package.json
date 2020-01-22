@@ -1,0 +1,27 @@
+{
+  "name": "websocket-chat",
+  "version": "1.0.0",
+  "description": "SPA chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melikyan333/websocket-chat.git"
+  },
+  "keywords": [
+    "vue.js",
+    "express.js",
+    "socket.io",
+    "spa",
+    "chat",
+    "app"
+  ],
+  "author": "Meri Melikyan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/melikyan333/websocket-chat/issues"
+  },
+  "homepage": "https://github.com/melikyan333/websocket-chat#readme"
+}
