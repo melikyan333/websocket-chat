@@ -1,6 +1,6 @@
 # Websocket Chat
 
-Websocket chat has been built with `vue.js`, `tailwind.js` and `socket.io`
+Websocket chat has been built with `vue.js`, `tailwind.css` and `socket.io`
 
 ## Getting Started
 
